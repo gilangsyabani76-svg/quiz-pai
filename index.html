@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Interaktif PAI Kelas XI: Meneladani Syekh Nawawi al-Bantani</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #064e3b; /* Deep Emerald */
+            --primary-light: #0f766e;
+            --primary-glow: rgba(6, 78, 59, 0.15);
+            --secondary: #d97706; /* Warm Gold */
+            --secondary-light: #f59e0b;
+            --secondary-glow: rgba(217, 119, 6, 0.2);
+            --bg-gradient: linear-gradient(135deg, #022c22 0%, #064e3b 50%, #0f766e 100%);
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --correct: #10b981;
+            --correct-glow: rgba(16, 185, 129, 0.15);
+            --wrong: #ef4444;
+            --wrong-glow: rgba(239, 68, 68, 0.15);
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.12);
+            --radius-sm: 10px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-dark);
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Ambient Background Elements */
+        body::before, body::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: var(--secondary-glow);
+            filter: blur(100px);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        body::before {
+            top: 10%;
+            left: 5%;
+        }
+
+        body::after {
+            bottom: 10%;
+            right: 5%;
+        }
+
+        /* Container & Cards */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Header Style */
+        .header-decor {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary-light));
+        }
+
+        /* Title Typography */
+        h1, h2, h3 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+        }
+
+        /* Welcome / Start Screen */
+        #start-screen {
+            text-align: center;
+        }
+
+        .badge-subject {
+            background: var(--primary-glow);
+            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(6, 78, 59, 0.1);
+        }
+
+        .title-main {
+            font-size: 2.2rem;
+            color: var(--primary);
+            line-height: 1.25;
+            margin-bottom: 15px;
+        }
+
+        .title-gold {
+            color: var(--secondary);
+            display: block;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .subtitle {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+            line-height: 1.6;
+        }
+
+        /* Prep Info Cards */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 35px;
+            text-align: left;
+        }
+
+        .info-item {
+            background: rgba(248, 250, 252, 0.8);
+            border-left: 4px solid var(--secondary);
+            padding: 15px;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .info-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            background: #fff;
+        }
+
+        .info-item i {
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 1.2rem;
+        }
+
+        .info-item h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--primary);
+        }
+
+        .info-item p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* General Button Style */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 32px;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+            text-decoration: none;
+            outline: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(6, 78, 59, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(6, 78, 59, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        /* Quiz Active Screen */
+        #quiz-screen {
+            display: none;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding-bottom: 15px;
+        }
+
+        .quiz-meta {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .meta-item i {
+            color: var(--secondary);
+            margin-right: 5px;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 50px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 50px;
+            transition: width 0.4s ease;
+        }
+
+        /* Question style */
+        .question-text {
+            font-size: 1.35rem;
+            line-height: 1.45;
+            color: var(--primary);
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        /* Options layout */
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 30px;
+        }
+
+        .option-btn {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            padding: 16px 20px;
+            border-radius: var(--radius-md);
+            text-align: left;
+            font-size: 1rem;
+            font-family: inherit;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            position: relative;
+            outline: none;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--primary-light);
+            background: rgba(15, 118, 110, 0.03);
+            transform: translateX(4px);
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+        }
+
+        .option-label {
+            width: 32px;
+            height: 32px;
+            background: #e2e8f0;
+            color: var(--text-muted);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 15px;
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+
+        .option-text {
+            flex-grow: 1;
+            line-height: 1.4;
+        }
+
+        /* State Styles for Options */
+        .option-btn.selected-correct {
+            border-color: var(--correct);
+            background: var(--correct-glow);
+            color: #065f46;
+        }
+
+        .option-btn.selected-correct .option-label {
+            background: var(--correct);
+            color: white;
+        }
+
+        .option-btn.selected-wrong {
+            border-color: var(--wrong);
+            background: var(--wrong-glow);
+            color: #991b1b;
+        }
+
+        .option-btn.selected-wrong .option-label {
+            background: var(--wrong);
+            color: white;
+        }
+
+        .option-btn.correct-answer {
+            border-color: var(--correct);
+            background: var(--correct-glow);
+        }
+
+        .option-btn.correct-answer .option-label {
+            background: var(--correct);
+            color: white;
+        }
+
+        /* Indicator Icons inside option buttons */
+        .option-indicator {
+            margin-left: 10px;
+            font-size: 1.2rem;
+            display: none;
+        }
+
+        .selected-correct .option-indicator.correct,
+        .correct-answer .option-indicator.correct {
+            display: inline-block;
+            color: var(--correct);
+        }
+
+        .selected-wrong .option-indicator.wrong {
+            display: inline-block;
+            color: var(--wrong);
+        }
+
+        /* Explanation Box */
+        .explanation-box {
+            background: linear-gradient(to right, rgba(217, 119, 6, 0.05), rgba(6, 78, 59, 0.03));
+            border-left: 4px solid var(--secondary);
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .explanation-box h5 {
+            font-size: 1rem;
+            color: var(--secondary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+        }
+
+        .explanation-box p {
+            font-size: 0.92rem;
+            line-height: 1.55;
+            color: #475569;
+        }
+
+        /* Footer / Navigation Actions */
+        .quiz-actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        #next-btn {
+            display: none;
+        }
+
+        /* Score / Result Screen */
+        #result-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .score-circle-wrapper {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 25px auto;
+        }
+
+        .score-svg {
+            transform: rotate(-90deg);
+            width: 180px;
+            height: 180px;
+        }
+
+        .score-svg circle {
+            fill: none;
+            stroke-width: 12;
+            stroke-linecap: round;
+        }
+
+        .score-svg .bg-circle {
+            stroke: #e2e8f0;
+        }
+
+        .score-svg .progress-circle {
+            stroke: var(--primary);
+            stroke-dasharray: 527.7; /* 2 * PI * r (r=84) */
+            stroke-dashoffset: 527.7;
+            transition: stroke-dashoffset 1.5s ease-out;
+        }
+
+        .score-text-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .score-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .score-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-top: 4px;
+            text-transform: uppercase;
+        }
+
+        .result-status {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .result-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            max-width: 500px;
+            margin: 0 auto 30px auto;
+            line-height: 1.6;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 35px;
+        }
+
+        .stat-card {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid #e2e8f0;
+        }
+
+        .stat-card i {
+            font-size: 1.3rem;
+            color: var(--secondary);
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        /* Review Section */
+        .review-section {
+            text-align: left;
+            margin-top: 40px;
+            border-top: 2px dashed #e2e8f0;
+            padding-top: 30px;
+        }
+
+        .review-title {
+            font-size: 1.25rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .review-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        /* Custom Scrollbar for review list */
+        .review-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        .review-list::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        .review-list::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .review-list::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .review-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-md);
+            padding: 18px;
+            transition: var(--transition);
+        }
+
+        .review-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .review-q-num {
+            background: var(--primary);
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 700;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .review-q-text {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            flex-grow: 1;
+            line-height: 1.45;
+        }
+
+        .review-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 50px;
+            text-transform: uppercase;
+        }
+
+        .review-badge.correct {
+            background: var(--correct-glow);
+            color: #065f46;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .review-badge.wrong {
+            background: var(--wrong-glow);
+            color: #991b1b;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .review-choices {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            padding-left: 39px;
+            line-height: 1.5;
+        }
+
+        .review-choices span {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .review-explanation {
+            font-size: 0.85rem;
+            color: #475569;
+            background: rgba(241, 245, 249, 0.7);
+            border-left: 3px solid var(--secondary);
+            padding: 10px 12px;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            margin-left: 39px;
+            line-height: 1.45;
+        }
+
+        /* Result Actions */
+        .result-actions {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        /* Canvas Confetti */
+        #confetti-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* Keyframe Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 640px) {
+            body {
+                padding: 10px;
+            }
+            .card {
+                padding: 25px 15px;
+                border-radius: var(--radius-md);
+            }
+            .title-main {
+                font-size: 1.6rem;
+            }
+            .title-gold {
+                font-size: 1.3rem;
+            }
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            .btn {
+                width: 100%;
+                padding: 12px 20px;
+            }
+            .question-text {
+                font-size: 1.15rem;
+            }
+            .option-btn {
+                padding: 12px 15px;
+                font-size: 0.95rem;
+            }
+            .option-label {
+                width: 28px;
+                height: 28px;
+                margin-right: 10px;
+                font-size: 0.9rem;
+            }
+            .result-actions {
+                flex-direction: column;
+            }
+            .review-choices {
+                padding-left: 0;
+            }
+            .review-explanation {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="card">
+            <div class="header-decor"></div>
+            <canvas id="confetti-canvas"></canvas>
+
+            <!-- START SCREEN -->
+            <div id="start-screen">
+                <div class="badge-subject">
+                    <i class="fa-solid fa-book-open"></i> PAI Kelas XI SMA/SMK
+                </div>
+                <h1 class="title-main">
+                    Kuis Interaktif PAI
+                    <span class="title-gold">Meneladani Syekh Nawawi al-Bantani</span>
+                </h1>
+                <p class="subtitle">
+                    Mari menguji dan mendalami pemahaman tentang riwayat hidup, keteladanan akhlak, serta sumbangsih intelektual maha guru para ulama Nusantara.
+                </p>
+
+                <div class="info-grid">
+                    <div class="info-item">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <h4>Imam Besar Masjidil Haram</h4>
+                        <p>Salah satu ulama Nusantara (Jawi) yang diakui kredibilitas keilmuannya di tanah suci Makkah.</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fa-solid fa-pen-nib"></i>
+                        <h4>Menulis 115+ Kitab</h4>
+                        <p>Karya monumental beliau meliputi tafsir, fikih, tasawuf, dan ushuluddin yang tersebar luas.</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fa-solid fa-users"></i>
+                        <h4>Guru Tokoh Nasional</h4>
+                        <p>Melahirkan murid legendaris pendiri organisasi Islam besar seperti NU dan Muhammadiyah.</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fa-solid fa-heart"></i>
+                        <h4>Keteladanan Akhlak</h4>
+                        <p>Dikenal sangat tawaduk (rendah hati) dan penuh penghormatan kepada guru-gurunya.</p>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" id="start-btn">
+                    Mulai Kuis <i class="fa-solid fa-play"></i>
+                </button>
+            </div>
+
+            <!-- QUIZ SCREEN -->
+            <div id="quiz-screen">
+                <div class="quiz-header">
+                    <div class="quiz-meta">
+                        <span class="meta-item"><i class="fa-solid fa-list-check"></i> <span id="q-counter">Pertanyaan 1/10</span></span>
+                        <span class="meta-item"><i class="fa-solid fa-clock"></i> <span id="q-timer">00:00</span></span>
+                    </div>
+                    <div class="badge-subject" style="margin-bottom: 0;">PAI XI</div>
+                </div>
+
+                <div class="progress-container">
+                    <div class="progress-bar" id="progress"></div>
+                </div>
+
+                <div id="question-container">
+                    <h2 class="question-text" id="question-text">Teks pertanyaan kuis akan dimuat di sini...</h2>
+                    
+                    <div class="options-list" id="options-list">
+                        <!-- Options dynamically loaded here -->
+                    </div>
+                </div>
+
+                <div class="explanation-box" id="explanation-box">
+                    <h5><i class="fa-solid fa-lightbulb"></i> Info Keteladanan / Fakta Sejarah</h5>
+                    <p id="explanation-text">Ulasan dan penjelasan tentang jawaban kuis akan muncul di bagian ini...</p>
+                </div>
+
+                <div class="quiz-actions">
+                    <button class="btn btn-primary" id="next-btn">
+                        Lanjut <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- RESULT SCREEN -->
+            <div id="result-screen">
+                <div class="badge-subject">
+                    <i class="fa-solid fa-square-poll-vertical"></i> Hasil Akhir Kuis
+                </div>
+                
+                <h2 class="result-status" id="result-status">Hebat! Kamu Menyelesaikan Kuis</h2>
+                
+                <div class="score-circle-wrapper">
+                    <svg class="score-svg">
+                        <circle class="bg-circle" cx="90" cy="90" r="84"></circle>
+                        <circle class="progress-circle" id="result-circle" cx="90" cy="90" r="84"></circle>
+                    </svg>
+                    <div class="score-text-center">
+                        <div class="score-number" id="result-score">0</div>
+                        <div class="score-label">Skor Akhir</div>
+                    </div>
+                </div>
+
+                <p class="result-desc" id="result-desc">
+                    Kamu telah menyelesaikan semua pertanyaan. Berikut adalah ringkasan hasil belajarmu hari ini.
+                </p>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <div class="stat-value" id="stat-correct">0 / 10</div>
+                        <div class="stat-label">Jawaban Benar</div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fa-solid fa-hourglass-half"></i>
+                        <div class="stat-value" id="stat-time">00:00</div>
+                        <div class="stat-label">Durasi Waktu</div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fa-solid fa-award"></i>
+                        <div class="stat-value" id="stat-grade">-</div>
+                        <div class="stat-label">Predikat Kelulusan</div>
+                    </div>
+                </div>
+
+                <!-- REVIEW SECTION -->
+                <div class="review-section">
+                    <h3 class="review-title">
+                        <i class="fa-solid fa-magnifying-glass"></i> Tinjau Jawaban & Materi Pembelajaran
+                    </h3>
+                    <div class="review-list" id="review-list">
+                        <!-- Dynamic Review Items -->
+                    </div>
+                </div>
+
+                <div class="result-actions">
+                    <button class="btn btn-primary" id="restart-btn">
+                        <i class="fa-solid fa-rotate-left"></i> Ulangi Kuis
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Logic Script -->
+    <script>
+        // Kuis Data (10 Questions)
+        const quizData = [
+            {
+                question: "Di manakah tempat lahir Syekh Nawawi al-Bantani dan pada tahun berapa beliau dilahirkan?",
+                options: [
+                    "Tanara, Serang, Banten pada tahun 1813 M",
+                    "Caringin, Pandeglang, Banten pada tahun 1831 M",
+                    "Karangantu, Serang, Banten pada tahun 1803 M",
+                    "Baros, Serang, Banten pada tahun 1823 M"
+                ],
+                correct: 0,
+                explanation: "Syekh Nawawi al-Bantani lahir di daerah Tanara, Kecamatan Tirtayasa, Kabupaten Serang, Banten pada tahun 1813 M (1230 H). Beliau wafat di Makkah pada tahun 1897 M."
+            },
+            {
+                question: "Silsilah keluarga Syekh Nawawi al-Bantani menunjukkan bahwa beliau berasal dari keturunan pendidik yang saleh. Siapakah nama ayah beliau?",
+                options: [
+                    "K.H. Hasyim Asy'ari",
+                    "K.H. Ahmad Dahlan",
+                    "Syekh Umar bin Arabi",
+                    "Syekh Yusuf al-Makassari"
+                ],
+                correct: 2,
+                explanation: "Ayah beliau bernama Syekh Umar bin Arabi (dikenal sebagai Umar), seorang ulama lokal dan pejabat keagamaan (khatib) di Tanara yang menjadi guru pertama bagi Syekh Nawawi."
+            },
+            {
+                question: "Sejak usia muda, Syekh Nawawi al-Bantani telah menunjukkan kecintaan yang besar pada ilmu agama. Ke manakah beliau berhijrah untuk memperdalam studinya?",
+                options: [
+                    "Kairo, Mesir",
+                    "Makkah, Arab Saudi",
+                    "Baghdad, Irak",
+                    "Hadramaut, Yaman"
+                ],
+                correct: 1,
+                explanation: "Pada usia yang relatif muda (kurang lebih 15 tahun), Syekh Nawawi berhijrah ke Makkah untuk menuntut ilmu dari ulama-ulama besar dan akhirnya menetap di sana untuk mengajar."
+            },
+            {
+                question: "Di antara murid-murid Syekh Nawawi al-Bantani yang kemudian menjadi tokoh nasional dan pendiri organisasi Islam terbesar di Indonesia adalah...",
+                options: [
+                    "K.H. Hasyim Asy'ari (pendiri NU) dan K.H. Ahmad Dahlan (pendiri Muhammadiyah)",
+                    "H.O.S. Tjokroaminoto dan Buya Hamka",
+                    "K.H. Wahid Hasyim dan Mohammad Natsir",
+                    "Raden Patah dan Sunan Kalijaga"
+                ],
+                correct: 0,
+                explanation: "Syekh Nawawi al-Bantani mendidik tokoh-tokoh besar Nusantara saat beliau mengajar di Makkah. Di antara murid beliau yang paling menonjol adalah K.H. Hasyim Asy'ari (pendiri Nahdlatul Ulama) dan K.H. Ahmad Dahlan (pendiri Muhammadiyah)."
+            },
+            {
+                question: "Atas pengakuan keilmuannya yang luar biasa, posisi terhormat manakah yang pernah diemban oleh Syekh Nawawi al-Bantani ketika bermukim di kota Makkah?",
+                options: [
+                    "Mufti Agung Kesultanan Ottoman",
+                    "Khatib Utama Masjid Nabawi",
+                    "Imam Besar Masjidil Haram",
+                    "Gubernur Kota Suci Makkah"
+                ],
+                correct: 2,
+                explanation: "Syekh Nawawi al-Bantani dipercaya menjabat sebagai Imam Besar Masjidil Haram. Posisi istimewa ini membuktikan pengakuan dunia Islam internasional atas tingkat kealiman dan wawasan keagamaan beliau."
+            },
+            {
+                question: "Karya keilmuan Syekh Nawawi al-Bantani sangat dihargai secara global. Institusi pendidikan Islam tertua dan berpengaruh dunia manakah yang menjadikan kitabnya sebagai rujukan resmi?",
+                options: [
+                    "Universitas Islam Madinah, Arab Saudi",
+                    "Universitas Al-Azhar, Kairo, Mesir",
+                    "Universitas Al-Qarawiyyin, Maroko",
+                    "Universitas Umm Al-Qura, Makkah"
+                ],
+                correct: 1,
+                explanation: "Kitab-kitab karangan Syekh Nawawi al-Bantani digunakan secara luas. Salah satunya di Universitas Al-Azhar, Kairo, Mesir, di mana karya-karya beliau dijadikan referensi resmi dalam kajian keislaman."
+            },
+            {
+                question: "Syekh Nawawi al-Bantani tergolong sebagai penulis ulung yang produktif. Berapa jumlah perkiraan kitab karangan beliau yang mencakup ilmu fikih, tafsir, tasawuf, hingga tauhid?",
+                options: [
+                    "Lebih dari 40 kitab",
+                    "Lebih dari 70 kitab",
+                    "Lebih dari 95 kitab",
+                    "Lebih dari 115 kitab"
+                ],
+                correct: 3,
+                explanation: "Syekh Nawawi al-Bantani sangat aktif menuangkan pemikirannya ke dalam tulisan. Total karya beliau mencapai lebih dari 115 kitab yang tersebar dan dipelajari di berbagai pesantren Nusantara hingga Timur Tengah."
+            },
+            {
+                question: "Di balik melimpahnya karya tulis ilmiah keislaman yang beliau susun, bagaimana keterbatasan sarana fisik yang dihadapi Syekh Nawawi saat menulis di zamannya?",
+                options: [
+                    "Menulis menggunakan pena bambu sederhana dan bantuan penerangan cahaya lilin",
+                    "Menggunakan bulu angsa dan lampu minyak tanah yang terang benderang",
+                    "Menyalin tulisan menggunakan pensil arang di pelepah daun kurma kering",
+                    "Mengetik dengan mesin tik manual di bawah nyala lampu gas"
+                ],
+                correct: 0,
+                explanation: "Beliau menulis karya-karya besarnya tanpa bantuan teknologi modern, tanpa listrik/internet, melainkan hanya mengandalkan kelenturan pena bambu serta cahaya lilin yang temaram di malam hari."
+            },
+            {
+                question: "Meskipun memiliki keilmuan yang tinggi dan diakui dunia internasional, Syekh Nawawi al-Bantani tetap berkarakter rendah hati, tidak gila popularitas, dan sangat memuliakan guru. Sikap ini dikenal dengan sebutan...",
+                options: [
+                    "Qana'ah",
+                    "Tawaduk",
+                    "Zuhud",
+                    "Istiqamah"
+                ],
+                correct: 1,
+                explanation: "Sikap luhur ini dinamakan Tawaduk (rendah hati). Beliau tidak mencari ketenaran pribadi, menyikapi perbedaan pendapat dengan lapang dada, dan meletakkan hormat setinggi-tingginya pada setiap guru beliau."
+            },
+            {
+                question: "Gelar kehormatan internasional apakah yang disematkan kepada Syekh Nawawi al-Bantani sebagai pengakuan atas ketokohannya di pusat keilmuan Islam dunia?",
+                options: [
+                    "Sayyidul Hijaz (Pemimpin Para Ulama Hijaz)",
+                    "Mufti Haramain (Ulama Fatwa Dua Kota Suci)",
+                    "Syaikhul Islam Nusantara",
+                    "Hadratus Syaikh (Maha Guru Ulama)"
+                ],
+                correct: 0,
+                explanation: "Syekh Nawawi al-Bantani dianugerahi gelar kehormatan 'Sayyidul Hijaz' yang berarti Pemimpin Para Ulama Hijaz. Gelar bergengsi ini menunjukkan otoritas keilmuan beliau yang mengakar kuat di pusat peradaban Islam saat itu."
+            }
+        ];
+
+        // State variables
+        let currentQuestionIdx = 0;
+        let score = 0;
+        let selectedOptionIdx = null;
+        let hasAnswered = false;
+        let timerInterval = null;
+        let totalSeconds = 0;
+        let answersHistory = [];
+
+        // DOM elements
+        const startScreen = document.getElementById('start-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
+        
+        const startBtn = document.getElementById('start-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        
+        const qCounter = document.getElementById('q-counter');
+        const qTimer = document.getElementById('q-timer');
+        const progressBar = document.getElementById('progress');
+        
+        const questionText = document.getElementById('question-text');
+        const optionsList = document.getElementById('options-list');
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationText = document.getElementById('explanation-text');
+        
+        const resultScore = document.getElementById('result-score');
+        const resultCircle = document.getElementById('result-circle');
+        const resultStatus = document.getElementById('result-status');
+        const resultDesc = document.getElementById('result-desc');
+        
+        const statCorrect = document.getElementById('stat-correct');
+        const statTime = document.getElementById('stat-time');
+        const statGrade = document.getElementById('stat-grade');
+        const reviewList = document.getElementById('review-list');
+        const confettiCanvas = document.getElementById('confetti-canvas');
+
+        // Confetti effect setup
+        let confettiActive = false;
+        let confettiParticles = [];
+        const ctx = confettiCanvas.getContext('2d');
+        
+        function resizeConfettiCanvas() {
+            confettiCanvas.width = confettiCanvas.parentElement.clientWidth;
+            confettiCanvas.height = confettiCanvas.parentElement.clientHeight;
+        }
+
+        window.addEventListener('resize', resizeConfettiCanvas);
+
+        function createConfetti() {
+            resizeConfettiCanvas();
+            confettiParticles = [];
+            const colors = ['#064e3b', '#d97706', '#10b981', '#fbbf24', '#3b82f6'];
+            
+            for (let i = 0; i < 100; i++) {
+                confettiParticles.push({
+                    x: Math.random() * confettiCanvas.width,
+                    y: Math.random() * -100 - 20,
+                    size: Math.random() * 8 + 4,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speed: Math.random() * 3 + 2,
+                    angle: Math.random() * 360,
+                    spin: Math.random() * 4 - 2
+                });
+            }
+            confettiActive = true;
+            animateConfetti();
+        }
+
+        function animateConfetti() {
+            if (!confettiActive) return;
+            ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+            
+            let particlesLeft = false;
+            
+            confettiParticles.forEach(p => {
+                p.y += p.speed;
+                p.angle += p.spin;
+                
+                if (p.y < confettiCanvas.height) {
+                    particlesLeft = true;
+                }
+                
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.angle * Math.PI / 180);
+                ctx.fillStyle = p.color;
+                ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                ctx.restore();
+            });
+
+            if (particlesLeft) {
+                requestAnimationFrame(animateConfetti);
+            } else {
+                confettiActive = false;
+                ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+            }
+        }
+
+        // Initialize quiz
+        startBtn.addEventListener('click', startQuiz);
+        nextBtn.addEventListener('click', handleNextQuestion);
+        restartBtn.addEventListener('click', restartQuiz);
+
+        // Keyboard navigation (A, B, C, D to answer, Enter to next)
+        document.addEventListener('keydown', (e) => {
+            if (quizScreen.style.display === 'block') {
+                const key = e.key.toUpperCase();
+                if (['A', 'B', 'C', 'D'].includes(key) && !hasAnswered) {
+                    const optIdx = key.charCodeAt(0) - 65; // A=0, B=1, C=2, D=3
+                    const optionBtns = optionsList.querySelectorAll('.option-btn');
+                    if (optionBtns[optIdx]) {
+                        optionBtns[optIdx].click();
+                    }
+                } else if (e.key === 'Enter' && hasAnswered) {
+                    handleNextQuestion();
+                }
+            } else if (startScreen.style.display !== 'none' && e.key === 'Enter') {
+                startQuiz();
+            } else if (resultScreen.style.display === 'block' && e.key === 'Enter') {
+                restartQuiz();
+            }
+        });
+
+        function startQuiz() {
+            startScreen.style.display = 'none';
+            quizScreen.style.display = 'block';
+            resultScreen.style.display = 'none';
+            
+            currentQuestionIdx = 0;
+            score = 0;
+            totalSeconds = 0;
+            answersHistory = [];
+            
+            startTimer();
+            loadQuestion();
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                totalSeconds++;
+                const mins = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
+                const secs = (totalSeconds % 60).toString().padStart(2, '0');
+                qTimer.textContent = `${mins}:${secs}`;
+            }, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+        }
+
+        function loadQuestion() {
+            hasAnswered = false;
+            selectedOptionIdx = null;
+            nextBtn.style.display = 'none';
+            explanationBox.style.display = 'none';
+            
+            const qData = quizData[currentQuestionIdx];
+            
+            // Update UI elements
+            qCounter.textContent = `Pertanyaan ${currentQuestionIdx + 1} dari ${quizData.length}`;
+            questionText.textContent = qData.question;
+            
+            // Progress Bar
+            const percent = ((currentQuestionIdx) / quizData.length) * 100;
+            progressBar.style.width = `${percent}%`;
+
+            // Clear and render options
+            optionsList.innerHTML = '';
+            qData.options.forEach((opt, idx) => {
+                const label = String.fromCharCode(65 + idx); // A, B, C, D
+                
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerHTML = `
+                    <div class="option-label">${label}</div>
+                    <div class="option-text">${opt}</div>
+                    <i class="fa-solid fa-circle-check option-indicator correct"></i>
+                    <i class="fa-solid fa-circle-xmark option-indicator wrong"></i>
+                `;
+                
+                btn.addEventListener('click', () => handleOptionSelection(idx));
+                optionsList.appendChild(btn);
+            });
+        }
+
+        function handleOptionSelection(idx) {
+            if (hasAnswered) return;
+            hasAnswered = true;
+            selectedOptionIdx = idx;
+            
+            const qData = quizData[currentQuestionIdx];
+            const isCorrect = (idx === qData.correct);
+            
+            if (isCorrect) {
+                score++;
+            }
+            
+            // Store history for final review
+            answersHistory.push({
+                questionIdx: currentQuestionIdx,
+                selectedIdx: idx,
+                isCorrect: isCorrect
+            });
+
+            // Update option styles visually
+            const optionBtns = optionsList.querySelectorAll('.option-btn');
+            optionBtns.forEach((btn, bIdx) => {
+                btn.disabled = true; // Disable all options
+                
+                if (bIdx === qData.correct) {
+                    btn.classList.add('correct-answer');
+                }
+                
+                if (bIdx === idx) {
+                    if (isCorrect) {
+                        btn.classList.add('selected-correct');
+                    } else {
+                        btn.classList.add('selected-wrong');
+                    }
+                }
+            });
+
+            // Show explanation
+            explanationText.textContent = qData.explanation;
+            explanationBox.style.display = 'block';
+            
+            // Smooth scroll to explanation if on mobile
+            if (window.innerWidth <= 640) {
+                explanationBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+
+            // Update Progress Bar to include this step
+            const percent = ((currentQuestionIdx + 1) / quizData.length) * 100;
+            progressBar.style.width = `${percent}%`;
+
+            // Reveal next button
+            nextBtn.style.display = 'inline-flex';
+        }
+
+        function handleNextQuestion() {
+            currentQuestionIdx++;
+            if (currentQuestionIdx < quizData.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            stopTimer();
+            quizScreen.style.display = 'none';
+            resultScreen.style.display = 'block';
+            
+            const scorePercent = Math.round((score / quizData.length) * 100);
+            
+            // Animate Score Counter
+            let count = 0;
+            const scoreInterval = setInterval(() => {
+                if (count >= scorePercent) {
+                    resultScore.textContent = scorePercent;
+                    clearInterval(scoreInterval);
+                } else {
+                    count += 2;
+                    if (count > scorePercent) count = scorePercent;
+                    resultScore.textContent = count;
+                }
+            }, 25);
+
+            // Animate SVG circle progress
+            // Total circumference = 527.7. The dashoffset needs to shrink as the score goes up.
+            const strokeOffset = 527.7 - (527.7 * scorePercent / 100);
+            resultCircle.style.strokeDashoffset = strokeOffset;
+            
+            // Set Result Info
+            const mins = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
+            const secs = (totalSeconds % 60).toString().padStart(2, '0');
+            statTime.textContent = `${mins}:${secs}`;
+            statCorrect.textContent = `${score} / ${quizData.length}`;
+
+            // Grade and Status
+            let grade = '';
+            let statusText = '';
+            let descText = '';
+
+            if (scorePercent >= 90) {
+                grade = 'A (Sangat Baik)';
+                statusText = 'Luar Biasa! Mumtaz 🌟';
+                descText = 'Kamu telah memahami materi kepribadian dan biografi Syekh Nawawi al-Bantani dengan sangat sempurna. Mari teladani sikap tawaduk dan kegigihan beliau dalam belajar!';
+                createConfetti();
+            } else if (scorePercent >= 70) {
+                grade = 'B (Baik)';
+                statusText = 'Kerja Bagus! Jayyid 👍';
+                descText = 'Pemahamanmu tentang perjuangan Syekh Nawawi al-Bantani sudah sangat baik. Terus tingkatkan antusiasme belajar dan ketawadukan dalam kehidupan sehari-hari.';
+                createConfetti();
+            } else if (scorePercent >= 50) {
+                grade = 'C (Cukup)';
+                statusText = 'Cukup Memuaskan! Belajar Lagi Yuk 📚';
+                descText = 'Kamu sudah menguasai beberapa poin penting, namun masih ada beberapa bagian biografi dan karya beliau yang perlu diperdalam lagi.';
+            } else {
+                grade = 'D (Kurang)';
+                statusText = 'Tetap Semangat! Bacalah Kembali Materi ✍️';
+                descText = 'Jangan berkecil hati. Mari baca ulang ringkasan biografi Syekh Nawawi al-Bantani dan coba selesaikan kuis ini lagi untuk hasil yang lebih baik!';
+            }
+
+            statGrade.textContent = grade;
+            resultStatus.textContent = statusText;
+            resultDesc.textContent = descText;
+
+            // Generate Review List
+            reviewList.innerHTML = '';
+            answersHistory.forEach((hist) => {
+                const q = quizData[hist.questionIdx];
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'review-item';
+                
+                const labelSelected = String.fromCharCode(65 + hist.selectedIdx);
+                const labelCorrect = String.fromCharCode(65 + q.correct);
+                
+                itemDiv.innerHTML = `
+                    <div class="review-item-header">
+                        <div class="review-q-num">${hist.questionIdx + 1}</div>
+                        <div class="review-q-text">${q.question}</div>
+                        <span class="review-badge ${hist.isCorrect ? 'correct' : 'wrong'}">
+                            ${hist.isCorrect ? 'Benar' : 'Salah'}
+                        </span>
+                    </div>
+                    <div class="review-choices">
+                        <span style="${!hist.isCorrect ? 'color: var(--wrong); font-weight: 600;' : ''}">
+                            <i class="fa-solid ${hist.isCorrect ? 'fa-check' : 'fa-xmark'}" style="margin-right: 6px;"></i> 
+                            Jawabanmu: <strong>(${labelSelected}) ${q.options[hist.selectedIdx]}</strong>
+                        </span>
+                        ${!hist.isCorrect ? `
+                        <span style="color: var(--correct); font-weight: 600;">
+                            <i class="fa-solid fa-circle-info" style="margin-right: 6px;"></i> 
+                            Jawaban Benar: <strong>(${labelCorrect}) ${q.options[q.correct]}</strong>
+                        </span>` : ''}
+                    </div>
+                    <div class="review-explanation">
+                        <strong>💡 Ringkasan:</strong> ${q.explanation}
+                    </div>
+                `;
+                reviewList.appendChild(itemDiv);
+            });
+        }
+
+        function restartQuiz() {
+            ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+            confettiActive = false;
+            startQuiz();
+        }
+    </script>
+</body>
+</html>
